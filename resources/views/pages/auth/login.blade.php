@@ -28,13 +28,13 @@
             <div class="d-flex align-items-stretch flex-wrap">
                 <div class="col-lg-4 col-md-6 col-12 order-lg-1 min-vh-100 order-2 bg-white">
                     <div class="m-3 p-4">
-                        <div class="d-flex justify-content-between"> <img src="/img/logo-toko.png" alt="logo"
-                                width="100" class="  mb-5 mt-2">
+                        {{-- <div class="d-flex justify-content-between">
+                            <img src="/img/logo-toko.png" alt="logo" width="100" class="  mb-5 mt-2">
                             <a href="/syarat-ketentuan">Syarat & Ketentuan</a>
-                        </div>
+                        </div> --}}
 
-                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">Dapoer
-                                Dindra</span>
+                        <h4 class="text-dark font-weight-normal">Welcome to <span class="font-weight-bold">Quick
+                                Count</span>
                         </h4>
                         <p class="text-muted">Before you get started, you must login or register if you don't already
                             have an account.</p>
@@ -42,7 +42,7 @@
                             novalidate="">
                             @csrf
                             <div class="form-group">
-                                <label for="no_hp">Nomor HP</label>
+                                <label for="no_hp">Username</label>
                                 <input id="username" type="username"
                                     class="form-control @error('username')
                                     is-invalid

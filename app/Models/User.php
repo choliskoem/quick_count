@@ -15,11 +15,19 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
+     *
+     *
      */
+
+    protected $table = 't_pengguna';
+
+    // Primary key
+    protected $primaryKey = 'id_pengguna';
     protected $fillable = [
-        'name',
-        'email',
+        'nama',
+        'username',
         'password',
+        'id_level'
     ];
 
     /**
@@ -43,5 +51,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(level::class, 'id_level', 'id_level');
     }
 }
