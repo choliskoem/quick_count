@@ -18,14 +18,13 @@
                 </ul>
             </li>
 
-            </li>
+            <li class="menu-header">Peserta</li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Peserta</span></a>
                 <ul class="dropdown-menu">
-                    {{-- <li>
-                    <a class="nav-link" href="/pembelian">All Pembelian</a>
-                </li> --}}
-
+                    <li>
+                        <a class="nav-link" href="{{ route('peserta') }}">Peserta</a>
+                    </li>
                 </ul>
             </li>
 
@@ -38,6 +37,5 @@
 
                 </ul>
             </li>
-
     </aside>
 </div>
