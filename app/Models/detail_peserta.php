@@ -15,6 +15,9 @@ class detail_peserta extends Model
     // Primary key
     protected $primaryKey = 'id_detail_peserta';
 
+    public $timestamps = false;
+
+
     // Define fillable fields
     protected $fillable = [
         'id_peserta',

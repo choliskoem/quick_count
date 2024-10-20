@@ -15,8 +15,14 @@ class peserta extends Model
     // Primary key
     protected $primaryKey = 'id_peserta';
 
+    // Disable auto-incrementing as it's a string primary key
+    public $incrementing = true;
+
+    public $timestamps = false;
+
     // Define fillable fields
     protected $fillable = [
+        'id_peserta',
         'no_urut',
         'id_bagian_pemilu'
     ];
