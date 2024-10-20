@@ -1,74 +1,93 @@
 @extends('layouts.app')
 
-@section('title', 'Peserta')
+@section('title', 'General Dashboard')
 
 @push('style')
     <!-- CSS Libraries -->
-
-    <link rel="stylesheet" href="/library/bootstrap-daterangepicker/daterangepicker.css">
-    <link rel="stylesheet" href="/library/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
-    <link rel="stylesheet" href="/library/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="/library/selectric/public/selectric.css">
-    <link rel="stylesheet" href="/library/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" href="/library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
 @endpush
 
 @section('main')
-
     <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>Peserta</h1>
             </div>
-
             <div class="section-body">
-                <div class="container mt-5">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>Penginputan Peserta</h2>
-                        </div>
-                        <div class="card-body">
-                            @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-
-
-                        </div>
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Peserta</h4>
+                    <div class="card-header-action">
+                        <a href="{{ route('peserta.create') }}" class="btn btn-primary">
+                            Tambah Peserta
+                        </a>
                     </div>
                 </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nomor Urut</th>
+                                <th scope="col">Bagian Pemilu</th>
+                                <th scope="col">Posisi 1</th>
+                                <th scope="col">Posisi 2</th>
+                                <th scope="col">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($peserta as $p)
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $p->no_urut }}</td>
+                                    <td>{{ strtoupper($p->bagianPemilu->label) . ' - ' . $p->bagianPemilu->kabkota->wilayah }}
+                                    </td>
+                                    <td>{{ $p->detailPeserta[0]->nama_peserta }}</td>
+                                    <td>{{ $p->detailPeserta[1]->nama_peserta }}</td>
+                                    <td><a href="{{ route('peserta.update', ['id' => $p->id_peserta]) }}"
+                                            class="btn btn-primary">
+                                            Edit
+                                        </a></td>
+                                </tr>
+                            @endforeach
 
-
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </section>
     </div>
-
-
 @endsection
 
 @push('scripts')
     <!-- JS Libraies -->
-
-    {{-- <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script> --}}
-    <script src="/library/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="/library/cleave.js/dist/cleave.min.js"></script>
-    <script src="/library/cleave.js/dist/addons/cleave-phone.us.js"></script>
-    <script src="/library/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="/library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
-    <script src="/library/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script src="/library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-    <script src="/library/select2/dist/js/select2.full.min.js"></script>
-    <script src="/library/selectric/public/jquery.selectric.min.js"></script>
-    <script src="/library/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('library/cleave.js/dist/cleave.min.js') }}"></script>
+    <script src="{{ asset('library/cleave.js/dist/addons/cleave-phone.us.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+    <script src="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
 
     <!-- Page Specific JS File -->
-    <script src="/js/page/modules-toastr.js"></script>
+    <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
 
 
     <!-- Page Specific JS File -->
-    <script src="/js/page/forms-advanced-forms.js"></script>
-    <script src="/js/page/bootstrap-modal.js"></script>
+    <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
+    <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
+
 
 
     <script>
@@ -88,17 +107,4 @@
             });
         @endif
     </script>
-
-
-
-
-
-    <!-- Page Specific JS File -->
-    {{-- <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script> --}}
-
-
-
-
-
-    <!-- Page Specific JS File -->
 @endpush

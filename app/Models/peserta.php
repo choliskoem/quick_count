@@ -26,4 +26,9 @@ class peserta extends Model
     {
         return $this->belongsTo(bagian_pemilu::class, 'id_bagian_pemilu', 'id_bagian_pemilu');
     }
+
+    public function detailPeserta()
+    {
+        return $this->hasMany(detail_peserta::class, 'id_peserta', 'id_peserta');
+    }
 }
