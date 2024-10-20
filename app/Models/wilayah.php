@@ -9,7 +9,7 @@ class wilayah extends Model
 {
     use HasFactory;
 
-    protected $table = 'wilayah';
+    protected $table = 't_wilayah';
 
     protected $primaryKey = 'id_wilayah';
     public $timestamps = false;

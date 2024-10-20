@@ -32,9 +32,9 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Saksi</span></a>
                 <ul class="dropdown-menu">
-                    {{-- <li>
-                    <a class="nav-link" href="/pembelian">All Pembelian</a>
-                </li> --}}
+                    <li>
+                        <a class="nav-link" href="/saksi">Penginputan Saksi</a>
+                    </li>
 
                 </ul>
             </li>

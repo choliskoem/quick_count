@@ -60,6 +60,8 @@
     <script src="/library/moment/min/moment.min.js"></script>
     <script src="/js/stisla.js"></script>
 
+    
+
     @stack('scripts')
 
     <!-- Template JS File -->

@@ -26,7 +26,6 @@ class tps extends Model
 
     // Define the fillable properties to allow mass assignment
     protected $fillable = [
-        'id_tps',
         'tps',
     ];
 }

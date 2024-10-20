@@ -9,7 +9,7 @@ class saksi extends Model
 {
     use HasFactory;
     // Define the table name
-    protected $table = 't_saksi';
+    protected $table = 'saksi';
 
     // Set the primary key column name
     protected $primaryKey = 'kd_saksi';
