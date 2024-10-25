@@ -23,245 +23,252 @@
             </div>
 
             <div class="row">
-                {{-- <div class="col-12 col-md-6 col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Line Chart</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart"></canvas>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class=" col-md-6 col-lg-6 ">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Pemilihan Gubernur</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="chartpilgub"></canvas>
+                <!-- Pemilihan Gubernur Chart -->
+                @if ($penggunaWilayah->where('id_kabkota', 7)->count() > 0)
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Pemilihan Gubernur</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="chartGubernur"></canvas> <!-- Unique ID for Gubernur chart -->
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
-                <div class=" col-md-6 col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Pemilihan Kabupaten / Kota</h4>
+                <!-- Pemilihan Kabupaten Chart -->
+                @if ($penggunaWilayah->where('id_kabkota', '!=', 7)->count() > 0)
+                    <!-- Check if there are any records -->
+                    @foreach ($dataKabupaten->groupBy('id_kabkota') as $id_kabkota => $kabupatenGroup)
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Pemilihan {{ $kabupatenGroup->first()->wilayah }}</h4>
+                                    <!-- Display the wilayah name -->
+                                </div>
+                                <div class="card-body">
+
+                                    <canvas id="chartKabupaten_{{ $id_kabkota }}"></canvas>
+                                    <!-- Unique canvas ID per kabupaten -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <canvas id="chartpilkabkota"></canvas>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                @endif
             </div>
-            {{-- <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-primary">
-                            <i class="far fa-user"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Total Admin</h4>
-                            </div>
-                            <div class="card-body">
-                                10
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-danger">
-                            <i class="far fa-newspaper"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>News</h4>
-                            </div>
-                            <div class="card-body">
-                                42
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="far fa-file"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Reports</h4>
-                            </div>
-                            <div class="card-body">
-                                1,201
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-success">
-                            <i class="fas fa-circle"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>Online Users</h4>
-                            </div>
-                            <div class="card-body">
-                                47
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            {{-- <h1>Selamat</h1> --}}
 
         </section>
     </div>
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
+    <!-- JS Libraries -->
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('library/cleave.js/dist/cleave.min.js') }}"></script>
-    <script src="{{ asset('library/cleave.js/dist/addons/cleave-phone.us.js') }}"></script>
     <script src="{{ asset('library/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-    <script src="{{ asset('library/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
-    <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
-    <script src="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
-    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
-
     <script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/page/modules-chartjs.js') }}"></script>
-
-
-
-
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
-
-
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/forms-advanced-forms.js') }}"></script>
-    <script src="{{ asset('js/page/bootstrap-modal.js') }}"></script>
 
     <script>
-        const ctx = document.getElementById("chartpilgub");
+        // Pemilihan Gubernur Chart
+        // Pemilihan Gubernur Chart
+        var dataGubernur = @json($dataGubernur); // Convert PHP array to JSON
 
-        new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: {!! json_encode($labels) !!}, // Labels from the SQL query
-                datasets: [{
-                        label: "Suara Sudah Verifikasi",
-                        data: {!! json_encode($verifData) !!}, // Data for "Suara Masuk"
-                        borderWidth: 2,
-                        backgroundColor: "#6777ef",
-                        borderColor: "#6777ef",
-                        borderWidth: 2.5,
-                        pointBackgroundColor: "#ffffff",
-                        pointRadius: 4,
-                    },
-                    {
-                        label: "Suara Belum Verifikasi",
-                        data: {!! json_encode($belumverifData) !!}, // Data for "Suara Belum Masuk"
-                        borderWidth: 2,
-                        backgroundColor: "#ffff00",
-                        borderColor: "#ffff00",
-                        borderWidth: 2.5,
-                        pointBackgroundColor: "#ffffff",
-                        pointRadius: 4,
-                    },
-                ],
-            },
-            options: {
-                legend: {
-                    display: true,
-                },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            drawBorder: false,
-                            color: "#f2f2f2",
-                        },
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 150,
-                        },
-                    }, ],
-                    xAxes: [{
-                        ticks: {
-                            display: false
-                        },
-                        gridLines: {
-                            display: false,
-                        },
-                    }, ],
-                },
-            },
+        var labels = dataGubernur.map(function(item) {
+            return item.nama_peserta; // Extract nama_peserta for labels
         });
 
+        var dataValues = dataGubernur.map(function(item) {
+            return item.jumlah; // Extract jumlah for data points
+        });
 
+        var dataGubernur2 = @json($dataGubernur2); // Convert PHP array to JSON
 
+        var labels2 = dataGubernur2.map(function(item) {
+            return item.nama_peserta; // Extract nama_peserta for labels
+        });
 
-        const ctx2 = document.getElementById("chartpilkabkota");
+        var dataValues2 = dataGubernur2.map(function(item) {
+            return item.jumlah; // Extract jumlah for data points
+        });
 
-        new Chart(ctx2, {
-            type: "bar",
-            data: {
-                labels: {!! json_encode($labelskabkota) !!}, // Labels from the SQL query
-                datasets: [{
-                        label: "Suara Sudah Verifikasi",
-                        data: {!! json_encode($masukVerifkabkota) !!}, // Data for "Suara Masuk"
-                        borderWidth: 2,
-                        backgroundColor: "#6777ef",
-                        borderColor: "#6777ef",
-                        borderWidth: 2.5,
-                        pointBackgroundColor: "#ffffff",
-                        pointRadius: 4,
-                    },
-                    {
-                        label: "Suara Belum Verifikasi",
-                        data: {!! json_encode($belumVerifkabkota) !!}, // Data for "Suara Belum Masuk"
-                        borderWidth: 2,
-                        backgroundColor: "#ffff00",
-                        borderColor: "#ffff00",
-                        borderWidth: 2.5,
-                        pointBackgroundColor: "#ffffff",
-                        pointRadius: 4,
-                    },
-                ],
-            },
-            options: {
-                legend: {
-                    display: true,
+        var ctx = document.getElementById("chartGubernur");
+        if (ctx) {
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels, // Use dynamic labels
+                    datasets: [{
+                            label: 'Data Verifikasi',
+                            data: dataValues, // Use dynamic data
+                            borderWidth: 2,
+                            backgroundColor: '#6777ef',
+                            borderColor: '#6777ef',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#ffffff',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Belum Verifikasi',
+                            data: dataValues2, // Use dynamic data
+                            borderWidth: 2,
+                            backgroundColor: '#FFFF00',
+                            borderColor: '#FFFF00',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#ffffff',
+                            pointRadius: 4
+                        }
+                    ],
                 },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            drawBorder: false,
-                            color: "#f2f2f2",
+
+                options: {
+                    responsive: true,
+                    // maintainAspectRatio: false,
+                    // legend: {
+                    //     display: false
+                    // },
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         },
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 150,
-                        },
-                    }, ],
-                    xAxes: [{
-                        ticks: {
-                            display: false
-                        },
-                        gridLines: {
-                            display: false,
-                        },
-                    }, ],
+                        yAxes: [{
+                            gridLines: {
+                                drawBorder: false,
+                                color: '#f2f2f2',
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 150
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false
+                            },
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                }
+            });
+        }
+
+
+
+
+
+        var kabupatenData1 = @json($dataKabupaten); // First dataset
+        var kabupatenData2 = @json($dataKabupaten2); // Second dataset
+
+        // Combine the data for each `id_kabkota`
+        var combinedData = {};
+
+        // Add data from kabupatenData1
+        kabupatenData1.forEach(function(item) {
+            if (!combinedData[item.id_kabkota]) {
+                combinedData[item.id_kabkota] = {
+                    wilayah: item.wilayah,
+                    data1: [],
+                    data2: []
+                };
+            }
+            combinedData[item.id_kabkota].data1.push({
+                nama_peserta: item.nama_peserta,
+                jumlah: item.jumlah
+            });
+        });
+
+        // Add data from kabupatenData2
+        kabupatenData2.forEach(function(item) {
+            if (!combinedData[item.id_kabkota]) {
+                combinedData[item.id_kabkota] = {
+                    wilayah: item.wilayah,
+                    data1: [],
+                    data2: []
+                };
+            }
+            combinedData[item.id_kabkota].data2.push({
+                nama_peserta: item.nama_peserta,
+                jumlah: item.jumlah
+            });
+        });
+
+        // Now create the chart for each kabupaten
+        Object.keys(combinedData).forEach(function(id_kabkota) {
+            var dataForKabupaten = combinedData[id_kabkota];
+
+            // Prepare labels and datasets for the chart
+            var labels = dataForKabupaten.data1.map(function(item) {
+                return item.nama_peserta;
+            });
+
+            var dataValues1 = dataForKabupaten.data1.map(function(item) {
+                return item.jumlah;
+            });
+
+            var dataValues2 = dataForKabupaten.data2.map(function(item) {
+                return item.jumlah;
+            });
+
+            // Create chart
+            var ctx = document.getElementById("chartKabupaten_" + id_kabkota).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels, // Dynamic labels for this kabupaten
+                    datasets: [{
+                        label: 'Data Verifikasi',
+                        data: dataValues1, // Data from kabupatenData1
+                        borderWidth: 2,
+                        backgroundColor: '#6777ef',
+                        borderColor: '#6777ef',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }, {
+                        label: 'Data Belum Verifikasi',
+                        data: dataValues2, // Data from kabupatenData2
+                        borderWidth: 2,
+                        backgroundColor: '#ffff00',
+                        borderColor: '#ffff00',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }]
                 },
-            },
+                options: {
+                    responsive: true,
+                    // maintainAspectRatio: false,
+                    // legend: {
+                    //     display: false
+                    // },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        },
+                        yAxes: [{
+                            gridLines: {
+                                drawBorder: false,
+                                color: '#f2f2f2',
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 150
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false
+                            },
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                }
+            });
         });
     </script>
 

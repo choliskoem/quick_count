@@ -16,7 +16,7 @@ class peserta extends Model
     protected $primaryKey = 'id_peserta';
 
     // Disable auto-incrementing as it's a string primary key
-    public $incrementing = true;
+    // public $incrementing = true;
 
     public $timestamps = false;
 

@@ -3,98 +3,72 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $pengguna = Auth::user()->id_pengguna;
 
-        $data = DB::select("
-        SELECT c.id_peserta,
-               GROUP_CONCAT(DISTINCT dp.nama_peserta ORDER BY dp.posisi SEPARATOR ' & ') AS nama_peserta
-        FROM t_count c
-        LEFT JOIN t_peserta p ON c.id_peserta = p.id_peserta
-        LEFT JOIN t_detail_peserta dp ON dp.id_peserta = p.id_peserta
-        WHERE p.id_bagian_pemilu = '1'
-        GROUP BY c.id_peserta
-    ");
+        // Get user-related region data
+        $penggunaWilayah = DB::table('t_pengguna_wilayah')
+            ->where('id_pengguna', $pengguna)
+            ->get();
 
 
-        $data2 = DB::select("
-        SELECT p.id_peserta, SUM(c.jumlah) as jumlah FROM `t_count` c LEFT JOIN t_peserta p on p.id_peserta= c.id_peserta WHERE p.id_bagian_pemilu ='1' and c.status = '1' GROUP BY p.id_peserta;
+        $dataGubernur = DB::table('t_count as c')
+            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
+            ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->join('v_peserta as vp', 'vp.id_peserta', '=', 'p.id_peserta')
+            ->where('wp.id_kabkota', 7)
+            ->where('c.status', '1')
+            ->groupBy('p.id_peserta', 'vp.nama_peserta')
+            ->get();
 
-        ");
+        $dataGubernur2 = DB::table('t_count as c')
+            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
+            ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->join('v_peserta as vp', 'vp.id_peserta', '=', 'p.id_peserta')
+            ->where('wp.id_kabkota', 7)
+            ->where('c.status', '0')
+            ->groupBy('p.id_peserta', 'vp.nama_peserta')
+            ->get();
 
-        $data3 = DB::select("
-        SELECT p.id_peserta, SUM(c.jumlah) as jumlah FROM `t_count` c LEFT JOIN t_peserta p on p.id_peserta= c.id_peserta WHERE p.id_bagian_pemilu ='1' and c.status = '0' GROUP BY p.id_peserta;
+        $dataKabupaten = DB::table('t_count as c')
+            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
+            ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->join('v_peserta as vp', 'vp.id_peserta', '=', 'p.id_peserta')
+            ->leftJoin('t_pengguna_wilayah as pw', 'wp.id_kabkota', '=', 'pw.id_kabkota')
+            ->where('wp.id_kabkota', '!=', 7)
+            ->where('c.status', '1')
+            ->where('pw.id_pengguna', Auth::user()->id_pengguna)
+            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'wp.id_kabkota', 'wp.wilayah')
+            ->get();
 
-        ");
-        // Prepare the labels and data for Chart.js
-        $labels = [];
-        $verifData = []; // Replace with your actual data for "Suara verif"
-        $belumverifData = []; // Replace with your actual data for "Suara Belum verif"
+        $dataKabupaten2 = DB::table('t_count as c')
+            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
+            ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->join('v_peserta as vp', 'vp.id_peserta', '=', 'p.id_peserta')
+            ->leftJoin('t_pengguna_wilayah as pw', 'wp.id_kabkota', '=', 'pw.id_kabkota')
+            ->where('wp.id_kabkota', '!=', 7)
+            ->where('c.status', '0')
+            ->where('pw.id_pengguna', Auth::user()->id_pengguna)
+            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'wp.id_kabkota', 'wp.wilayah') // Added wp.id_kabkota and wp.wilayah
+            ->get();
 
-        foreach ($data as $row) {
-            $labels[] = $row->nama_peserta;
-            // Populate verifData and belumverifData based on your logic
-        }
-
-        foreach ($data2 as $row) {
-            $verifData[] = $row->jumlah;
-            // Populate masukData and belumMasukData based on your logic
-        }
-
-        foreach ($data3 as $row) {
-            $belumverifData[] = $row->jumlah;
-            // Populate masukData and belumMasukData based on your logic
-        }
-
-
-
-
-        $datakabkota = DB::select("
-        SELECT c.id_peserta,
-               GROUP_CONCAT(DISTINCT dp.nama_peserta ORDER BY dp.posisi SEPARATOR ' & ') AS nama_peserta
-        FROM t_count c
-        LEFT JOIN t_peserta p ON c.id_peserta = p.id_peserta
-        LEFT JOIN t_detail_peserta dp ON dp.id_peserta = p.id_peserta
-        WHERE p.id_bagian_pemilu = '4'
-        GROUP BY c.id_peserta
-    ");
-
-        $datakabkota2 = DB::select("
-        SELECT p.id_peserta, SUM(c.jumlah) as jumlah FROM `t_count` c LEFT JOIN t_peserta p on p.id_peserta= c.id_peserta WHERE p.id_bagian_pemilu ='4' and c.status = '1' GROUP BY p.id_peserta;
-
-        ");
-
-        $datakabkota3 = DB::select("
-        SELECT p.id_peserta, SUM(c.jumlah) as jumlah FROM `t_count` c LEFT JOIN t_peserta p on p.id_peserta= c.id_peserta WHERE p.id_bagian_pemilu ='4' and c.status = '0' GROUP BY p.id_peserta;
-
-        ");
+        $dataGroupedByKabupaten = $dataKabupaten->groupBy('id_kabkota');
 
 
-
-        // Prepare the labels and data for Chart.js
-        $labelskabkota = [];
-        $masukVerifkabkota = []; // Replace with your actual data for "Suara Masuk"
-        $belumVerifkabkota = []; // Replace with your actual data for "Suara Belum Masuk"
-
-        foreach ($datakabkota as $row) {
-            $labelskabkota[] = $row->nama_peserta;
-            // Populate masukData and belumMasukData based on your logic
-        }
-
-        foreach ($datakabkota2 as $row) {
-            $masukVerifkabkota[] = $row->jumlah;
-            // Populate masukData and belumMasukData based on your logic
-        }
-        foreach ($datakabkota3 as $row) {
-            $belumVerifkabkota[] = $row->jumlah;
-            // Populate masukData and belumMasukData based on your logic
-        }
-
-        // return $labels;
-        return view('pages.dashboard', compact('labels', 'labelskabkota', 'verifData', 'belumverifData', 'masukVerifkabkota', 'belumVerifkabkota'));
+        return view('pages.dashboard', compact('penggunaWilayah', 'dataGubernur', 'dataKabupaten', 'dataGubernur2', 'dataKabupaten2', 'dataGroupedByKabupaten'));
     }
 }

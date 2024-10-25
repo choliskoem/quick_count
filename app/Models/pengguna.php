@@ -15,6 +15,9 @@ class pengguna extends Model
     // Primary key
     protected $primaryKey = 'id_pengguna';
 
+    public $timestamps = false;
+
+
     // Define fillable fields
     protected $fillable = [
         'nama',

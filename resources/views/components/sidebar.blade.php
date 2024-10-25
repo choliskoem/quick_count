@@ -18,17 +18,20 @@
                 </ul>
             </li>
 
-            <li class="menu-header">Peserta</li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Peserta</span></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="nav-link" href="{{ route('peserta') }}">Peserta</a>
-                    </li>
-                </ul>
-            </li>
+            @if (Auth::user()->id_level == '1')
+                <li class="menu-header">Peserta</li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Peserta</span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link" href="{{ route('peserta') }}">Peserta</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
-            <li class="menu-header">Saksi</li>
+
+            <li class="menu-header">User</li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Saksi</span></a>
                 <ul class="dropdown-menu">
@@ -38,5 +41,18 @@
 
                 </ul>
             </li>
+            @if (Auth::user()->id_level == '1')
+                <li class="menu-header">User</li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>User</span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link" href="/user">Penginputan User</a>
+                        </li>
+
+                    </ul>
+                </li>
+            @endif
+
     </aside>
 </div>

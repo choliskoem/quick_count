@@ -10,20 +10,70 @@ use Illuminate\Support\Str;
 use App\Models\wilayah_pemilu;
 use App\Models\wilayah_saksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class SaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // $result = DB::table('wilayah_saksi as ws')
+        //     ->when($request->input('name'), function ($query, $name) {
+        //         return $query->where('s.nama_saksi', 'like', '%' . $name . '%');
+        //     })
+        //     ->leftJoin('saksi as s', 's.kd_saksi', '=', 'ws.kd_saksi')
+        //     ->leftJoin('t_wilayah as tw', 'tw.id_wilayah', '=', 'ws.id_wilayah')
+        //     ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'ws.id_kabkota')
+        //     ->leftJoin('tps as tp', 'tp.id_tps', '=', 'ws.id_tps')
+        //     ->select(
+        //         's.nama_saksi',
+        //         's.no_hp',
+        //         DB::raw("GROUP_CONCAT(tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') as tps_list"),
+        //         'wp.wilayah',
+        //         'tw.nama_kecamatan',
+        //         'tw.nama_desa'
+        //     )
+        //     ->groupBy('s.nama_saksi', 's.no_hp', 'ws.id_kabkota', 'wp.wilayah', 'tw.nama_kecamatan', 'tw.nama_desa')
+        //     ->paginate(10);
+        $id_pengguna = Auth::user()->id_pengguna; // Pastikan id_pengguna diambil dari request
+
+        $result = DB::table('wilayah_saksi as ws')
+            ->when($request->input('name'), function ($query, $name) {
+                return $query->where('s.nama_saksi', 'like', '%' . $name . '%');
+            })
+            ->leftJoin('saksi as s', 's.kd_saksi', '=', 'ws.kd_saksi')
+            ->leftJoin('t_wilayah as tw', 'tw.id_wilayah', '=', 'ws.id_wilayah')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'ws.id_kabkota')
+            ->leftJoin('tps as tp', 'tp.id_tps', '=', 'ws.id_tps')
+            ->leftJoin('t_pengguna_wilayah as pw', 'pw.id_kabkota', '=', 'wp.id_kabkota')
+            ->whereIn('pw.id_kabkota', function ($query) use ($id_pengguna) {
+                $query->select('id_kabkota')
+                    ->from('t_pengguna_wilayah')
+                    ->where('id_pengguna', $id_pengguna); // Gunakan parameter binding
+            })
+            ->groupBy('s.nama_saksi', 's.no_hp', 'ws.id_kabkota', 'wp.wilayah', 'tw.nama_kecamatan', 'tw.nama_desa')
+            ->select(
+                's.nama_saksi',
+                's.no_hp',
+                DB::raw("GROUP_CONCAT(tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') as tps_list"),
+                'wp.wilayah',
+                'tw.nama_kecamatan',
+                'tw.nama_desa'
+            )
+            ->paginate(10);
+        return view('pages.saksi.index', compact('result'));
+    }
+    public function create()
+    {
+
         $wilayah = $results = DB::table('wilayah_pemilu')
             ->where('id_kabkota', '!=', '7')
             ->get();
 
         $tpsList = tps::all();
 
-        return view('pages.saksi.index', compact('wilayah', 'tpsList'));
+        return view('pages.saksi.create', compact('wilayah', 'tpsList'));
     }
 
 
@@ -79,7 +129,7 @@ class SaksiController extends Controller
             }
 
             // Redirect with success message
-            return redirect()->back()->with('success', 'Saksi Berhasil Ditambahkan.');
+            return redirect()->route('saksi.index')->with('success', 'Saksi Berhasil Ditambahkan.');
         }
 
         // Redirect with error message if save fails

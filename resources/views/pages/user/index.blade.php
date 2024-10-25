@@ -12,7 +12,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Saksi</h1>
+                <h1>User</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -23,10 +23,10 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h4>Saksi</h4>
+                    <h4>User</h4>
                     <div class="card-header-action">
-                        <a href="{{ route('saksi.create') }}" class="btn btn-primary">
-                            Tambah Saksi
+                        <a href="{{ route('user.create') }}" class="btn btn-primary">
+                            Tambah User
                         </a>
                     </div>
 
@@ -35,13 +35,13 @@
                 </div>
                 <div class="card-body">
                     <div class="float-right">
-                        <form method="GET" action="{{ route('saksi.index') }}">
-                            <div class="input-group">
+                        <form method="GET" action="{{ route('user.index') }}">
+                            {{-- <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search" name="name">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </form>
                     </div>
                     <div class="table-responsive">
@@ -49,30 +49,22 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Nama Saksi</th>
-                                    <th scope="col">Np. HP</th>
-                                    <th scope="col">TPS</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Username</th>
+
                                     <th scope="col">Wilayah</th>
-                                    <th scope="col">Kecamatan</th>
-                                    <th scope="col">Desa</th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($result as $s)
+                                @foreach ($result as $p)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>{{ $s->nama_saksi }}</td>
-                                        <td>{{ $s->no_hp }}</td>
-                                        <td>{{ $s->tps_list }}</td>
-                                        <td>{{ $s->wilayah }}</td>
-                                        {{-- <td>{{ $s->wilayah }}</td> --}}
-                                        <td>{{ $s->nama_kecamatan }}</td>
-                                        <td>{{ $s->nama_desa }}</td>
-                                        {{-- <td><a href="{{ route('peserta.update', ['id' => $s->id_peserta]) }}"
-                                            class="btn btn-primary">
-                                            Edit
-                                        </a></td> --}}
+                                        <td>{{ $p->nama }}</td>
+                                        <td>{{ $p->username }}</td>
+                                        <td>{{ $p->wilayah }}</td>
+
+
                                     </tr>
                                 @endforeach
 
@@ -81,7 +73,7 @@
                     </div>
 
                     <div class="float-right">
-                        {{ $result->withQueryString()->links() }}
+                        {{-- {{ $result->withQueryString()->links() }} --}}
                     </div>
                 </div>
             </div>
