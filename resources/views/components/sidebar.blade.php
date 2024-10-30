@@ -12,7 +12,10 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                        <a class="nav-link" href="/dashboard">Grafik Data</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/detail">Detail Data</a>
                     </li>
 
                 </ul>

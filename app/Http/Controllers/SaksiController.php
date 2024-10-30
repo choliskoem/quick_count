@@ -42,6 +42,9 @@ class SaksiController extends Controller
             ->when($request->input('name'), function ($query, $name) {
                 return $query->where('s.nama_saksi', 'like', '%' . $name . '%');
             })
+            ->when($request->input('name'), function ($query, $name) {
+                return $query->where('s.no_hp', 'like', '%' . $name . '%');
+            })
             ->leftJoin('saksi as s', 's.kd_saksi', '=', 'ws.kd_saksi')
             ->leftJoin('t_wilayah as tw', 'tw.id_wilayah', '=', 'ws.id_wilayah')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'ws.id_kabkota')
@@ -56,7 +59,7 @@ class SaksiController extends Controller
             ->select(
                 's.nama_saksi',
                 's.no_hp',
-                DB::raw("GROUP_CONCAT(tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') as tps_list"),
+                DB::raw("GROUP_CONCAT(distinct tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') as tps_list"),
                 'wp.wilayah',
                 'tw.nama_kecamatan',
                 'tw.nama_desa'

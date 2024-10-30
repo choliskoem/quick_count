@@ -6,6 +6,7 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 @endpush
 
 @section('main')
@@ -36,16 +37,19 @@
                 <div class="card-body">
                     <div class="float-right">
                         <form method="GET" action="{{ route('saksi.index') }}">
-                            <div class="input-group">
+                            {{-- <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search" name="name">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </form>
                     </div>
+
+
+
                     <div class="table-responsive">
-                        <table class="table-striped table">
+                        <table class="table-striped table" id="table-2">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -55,7 +59,6 @@
                                     <th scope="col">Wilayah</th>
                                     <th scope="col">Kecamatan</th>
                                     <th scope="col">Desa</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,7 +78,6 @@
                                         </a></td> --}}
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -102,6 +104,13 @@
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    {{-- <script src="{{ asset() }}"></script> --}}
+    {{-- <script src="{{ asset() }}"></script> --}}
+    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
