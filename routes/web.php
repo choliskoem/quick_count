@@ -17,12 +17,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/detail', [HomeController::class, 'index2'])->name('detail');
     Route::resource('saksi', SaksiController::class);
-    Route::get('/desa/{id_kabkota}', [SaksiController::class, 'getDesaByKabkota']);
-    Route::get('/bagian-pemilu/{id_kabkota}', [SaksiController::class, 'getBagianPemiluByKabkota']);
+    Route::get('/desasaksi/{id_kabkota}', [SaksiController::class, 'getDesaKabkota']);
+    Route::get('/bagian-pemilusaksi/{id_kabkota}', [SaksiController::class, 'getBagianPemiluKabkota']);
 
     Route::get('/desa/{id_kabkota}', [HomeController::class, 'getDesaByKabkota']);
-
-
     Route::get('/bagian-pemilu/{id_kabkota}', [HomeController::class, 'getBagianPemiluByKabkota']);
 
     Route::post('/saksi/store', [SaksiController::class, 'store']);

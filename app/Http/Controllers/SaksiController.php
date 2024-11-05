@@ -72,6 +72,7 @@ class SaksiController extends Controller
 
         $wilayah = $results = DB::table('wilayah_pemilu')
             ->where('id_kabkota', '!=', '7')
+            ->where('id_kabkota', '!=', '0')
             ->get();
 
         $tpsList = tps::all();
@@ -140,19 +141,19 @@ class SaksiController extends Controller
     }
 
 
-    public function getDesaByKabkota($id_kabkota)
+    public function getDesaKabkota($id_kabkota)
     {
         // Mengambil desa berdasarkan id_kabkota
-        $desas = wilayah::where('id_kabkota', $id_kabkota)->get(['id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
+        $desasaksi = wilayah::where('id_kabkota', $id_kabkota)->get(['id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
 
-        return response()->json($desas);
+        return response()->json($desasaksi);
     }
 
-    public function getBagianPemiluByKabkota($id_kabkota)
+    public function getBagianPemiluKabkota($id_kabkota)
     {
         // Mengambil bagian pemilu berdasarkan id_kabkota
-        $bagians = bagian_pemilu::where('id_kabkota', $id_kabkota)->get(['id_kabkota', 'id_bagian_pemilu', 'label']);
+        $bagiansaksi = bagian_pemilu::where('id_kabkota', $id_kabkota)->get(['id_kabkota', 'id_bagian_pemilu', 'label']);
 
-        return response()->json($bagians);
+        return response()->json($bagiansaksi);
     }
 }

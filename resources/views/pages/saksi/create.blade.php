@@ -182,7 +182,7 @@
                 if (id_kabkota) {
                     // Tambahkan input hidden wilayah dengan value dari id_kabkota
                     $.ajax({
-                        url: '/desa/' + id_kabkota,
+                        url: '/desasaksi/' + id_kabkota,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -224,7 +224,7 @@
                 // Memuat bagian pemilu berdasarkan id_kabkota
                 if (id_kabkota) {
                     $.ajax({
-                        url: '/bagian-pemilu/' + id_kabkota,
+                        url: '/bagian-pemilusaksi/' + id_kabkota,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -233,10 +233,8 @@
                             // Buat checkbox berdasarkan data
 
 
-
-
                             $.each(data, function(key, value) {
-                                $('#bagian-pemilu-checkboxes2').append(
+                                $('#bagian-pemilu-checkboxes').append(
                                     '<input class="form-check-input" type="checkbox" id="checkbox' +
                                     value.id_kabkota +
                                     '"  value="7" name="id_kabkota[]">' +

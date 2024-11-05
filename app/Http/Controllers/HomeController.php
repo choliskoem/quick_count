@@ -136,11 +136,14 @@ class HomeController extends Controller
     public function getDesaByKabkota($id_kabkota)
     {
         // Mengambil desa berdasarkan id_kabkota
-        if ($id_kabkota = 7) {
+        if ($id_kabkota == '7') {
             $desas = wilayah::all(['id_provinsi', 'id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
         } else {
             $desas = wilayah::where('id_kabkota', $id_kabkota)->get(['id_provinsi', 'id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
         }
+
+        // $desas = wilayah::where('id_kabkota', $id_kabkota)->get(['id_provinsi', 'id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
+
 
 
         return response()->json($desas);
