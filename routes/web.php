@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SaksiController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{id}/update', 'update')->name('.update');
         Route::post('{id}/update', 'updatePost')->name('.update');
     });
+
+
+    Route::resource('verif', VerifController::class);
 
     Route::resource('user', UserController::class);
     Route::post('/user/store', [UserController::class, 'store']);

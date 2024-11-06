@@ -57,5 +57,21 @@
                 </li>
             @endif
 
+
+
+            @if (Auth::user()->id_level == '1')
+                <li class="menu-header">Verifikasi</li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Verifikasi
+                        </span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link" href="/verif">Verifikasi Data</a>
+                        </li>
+
+                    </ul>
+                </li>
+            @endif
+
     </aside>
 </div>
