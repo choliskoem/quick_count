@@ -73,24 +73,28 @@
     <script>
         // Pemilihan Gubernur Chart
         // Pemilihan Gubernur Chart
-        var dataGubernur = @json($dataGubernur); // Convert PHP array to JSON
+        var dataGubernur = @json($dataGubernur);
+        var dataGubernur2 = @json($dataGubernur2);
 
-        var labels = dataGubernur.map(function(item) {
-            return item.nama_peserta; // Extract nama_peserta for labels
+        // Extract labels and data values
+        var labels1 = dataGubernur.map(function(item) {
+            return item.nama_peserta; // Extract labels from dataGubernur
         });
-
-        var dataValues = dataGubernur.map(function(item) {
-            return item.jumlah; // Extract jumlah for data points
-        });
-
-        var dataGubernur2 = @json($dataGubernur2); // Convert PHP array to JSON
 
         var labels2 = dataGubernur2.map(function(item) {
-            return item.nama_peserta; // Extract nama_peserta for labels
+            return item.nama_peserta; // Extract labels from dataGubernur2
+        });
+
+        // Combine labels into a single array with unique values
+        var combinedLabels = Array.from(new Set([...labels1, ...labels2]));
+
+        // Extract data values for each dataset
+        var dataValues = dataGubernur.map(function(item) {
+            return item.jumlah; // Extract jumlah for dataGubernur
         });
 
         var dataValues2 = dataGubernur2.map(function(item) {
-            return item.jumlah; // Extract jumlah for data points
+            return item.jumlah; // Extract jumlah for dataGubernur2
         });
 
         var ctx = document.getElementById("chartGubernur");
@@ -98,7 +102,7 @@
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: labels, // Use dynamic labels
+                    labels: combinedLabels, // Use dynamic labels
                     datasets: [{
                             label: 'Data Verifikasi',
                             data: dataValues, // Use dynamic data
@@ -154,11 +158,12 @@
                 }
             });
         }
+    </script>
 
 
 
 
-
+    <script>
         var kabupatenData1 = @json($dataKabupaten); // First dataset
         var kabupatenData2 = @json($dataKabupaten2); // Second dataset
 
@@ -213,8 +218,8 @@
             });
 
             // Create chart
-            var ctx = document.getElementById("chartKabupaten_" + id_kabkota).getContext('2d');
-            new Chart(ctx, {
+            var ctx2 = document.getElementById("chartKabupaten_" + id_kabkota).getContext('2d');
+            new Chart(ctx2, {
                 type: 'bar',
                 data: {
                     labels: labels, // Dynamic labels for this kabupaten
