@@ -77,13 +77,13 @@
                                     Login
                                 </button>
                             </div>
-                            <div class="mt-5 text-center">
+                            {{-- <div class="mt-5 text-center">
                                 Don't have an account? <a href="/register">Create One</a>
-                            </div>
+                            </div> --}}
                         </form>
 
                         <div class="text-small mt-5 text-center">
-                            Copyright &copy; DapoerDindra2024
+                            Copyright &copy; QuickCount2024
                             <div class="mt-2">
                                 {{-- <a href="#">Privacy Policy</a>
                                 <div class="bullet"></div>

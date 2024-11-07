@@ -141,11 +141,92 @@ class SaksiController extends Controller
     }
 
 
+    public function create2(Request $request)
+    {
+        $saksiList = Saksi::all();
+
+        // $wilayah = $results = DB::table('wilayah_pemilu')
+        //     ->where('id_kabkota', '!=', '7')
+        //     ->where('id_kabkota', '!=', '0')
+        //     ->get();
+
+        $kabkotaId = $request->session()->get('pengguna_wilayah.kabkota_id');
+
+        $wilayah =  $results = DB::table('wilayah_pemilu')
+            ->whereIn('id_kabkota', function ($query) {
+                $query->select('id_kabkota')
+                    ->from('wilayah_saksi');
+            })
+            ->where('id_kabkota', $kabkotaId)
+            ->where('id_kabkota', '!=', '0')
+            // ->where('id_kabkota', '!=', '7')
+            ->get();
+
+        $tpsList = tps::all();
+
+        return view('pages.saksi.create2', compact('saksiList',  'wilayah', 'tpsList'));
+    }
+    public function getNoHp($kd_saksi)
+    {
+        // Mencari data saksi berdasarkan kd_saksi
+        $saksi = Saksi::where('kd_saksi', $kd_saksi)->first();
+
+        // Jika saksi ditemukan, kembalikan data no_hp, jika tidak, kembalikan string kosong
+        return response()->json(['no_hp' => $saksi ? $saksi->no_hp : '']);
+    }
+
+
+
+
+    public function store2(Request $request)
+    {
+        // Validate that required fields are provided
+        // $request->validate([
+        //     'id_kabkota' => 'required|array',
+        //     'tps' => 'required|array',
+        //     'kd_saksi' => 'required' // Ensure kd_saksi is selected from the dropdown
+        // ]);
+
+        try {
+            // Use the selected kd_saksi from the dropdown
+            $kdSaksi = $request->kd_saksi;
+
+            // Save wilayah_saksi with the corresponding relationship
+            foreach ($request->id_kabkota as $kabkota_id) {
+                foreach ($request->tps as $tps_id) {
+                    $wilayahSaksi = new wilayah_saksi();
+                    $wilayahSaksi->id_wilayah_saksi = Str::uuid();
+                    $wilayahSaksi->id_kabkota = $kabkota_id;
+                    $wilayahSaksi->id_wilayah = $request->id_wilayah;
+                    $wilayahSaksi->kd_saksi = $kdSaksi; // Use the selected kd_saksi
+                    $wilayahSaksi->id_tps = $tps_id;
+
+                    // return $wilayahSaksi;
+                    $wilayahSaksi->save();
+                }
+            }
+
+
+            // Redirect with success message
+            return redirect()->route('saksi.index')->with('success', 'Saksi Berhasil Ditambahkan.');
+        } catch (\Exception $e) {
+            // Log error and redirect with an error message
+            // \Log::error('Failed to save saksi: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add saksi.');
+        }
+    }
+
+
+
     public function getDesaKabkota($id_kabkota)
     {
         // Mengambil desa berdasarkan id_kabkota
-        $desasaksi = wilayah::where('id_kabkota', $id_kabkota)->get(['id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
-
+        if ($id_kabkota == '7') {
+            $desasaksi = wilayah::all(['id_provinsi', 'id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
+        } else {
+            $desasaksi = wilayah::where('id_kabkota', $id_kabkota)->get(['id_provinsi', 'id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);
+        }
+        // $desasaksi = wilayah::where('id_kabkota', $id_kabkota)->get(['id_wilayah', 'id_kabkota', 'id_desa', 'nama_desa']);x
         return response()->json($desasaksi);
     }
 

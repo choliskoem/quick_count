@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'General Dashboard')
+@section('title', 'Akun')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -12,7 +12,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>User</h1>
+                <h1>Akun</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -23,10 +23,10 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h4>User</h4>
+                    <h4>Akun</h4>
                     <div class="card-header-action">
                         <a href="{{ route('user.create') }}" class="btn btn-primary">
-                            Tambah User
+                            Tambah Akun
                         </a>
                     </div>
 

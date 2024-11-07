@@ -29,6 +29,9 @@
                         <a href="{{ route('saksi.create') }}" class="btn btn-primary">
                             Tambah Saksi
                         </a>
+                        <a href="{{ route('saksi.create2') }}" class="btn btn-primary">
+                            Tambah Wilayah Tps
+                        </a>
                     </div>
 
                     <div class="clearfix mb-3"></div>

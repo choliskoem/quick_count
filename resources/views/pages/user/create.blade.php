@@ -18,7 +18,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Penginputan User Baru</h1>
+                <h1>Penginputan Akun Baru</h1>
             </div>
 
             <div class="section-body">

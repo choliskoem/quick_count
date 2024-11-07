@@ -24,12 +24,21 @@
             </div>
 
             <div class="text-center mb-4">
-                <a href="{{ $fileCi1->url_file }}" target="_blank">
-                    <img src="{{ $fileCi1->url_file }}" alt="File C1 Image" class="img-fluid">
-                </a>
-                <a href="{{ $filePapan->url_file }}" target="_blank">
-                    <img src="{{ $filePapan->url_file }}" alt="File Papan Image" class="img-fluid">
-                </a>
+                @if ($fileCi1Url)
+                    <a href="{{ $fileCi1Url }}" target="_blank">
+                        <img src="{{ $fileCi1Url }}" alt="File C1 Image" class="img-fluid">
+                    </a>
+                @else
+                    <p>File C1 tidak tersedia.</p>
+                @endif
+
+                @if ($filePapanUrl)
+                    <a href="{{ $filePapanUrl }}" target="_blank">
+                        <img src="{{ $filePapanUrl }}" alt="File Papan Image" class="img-fluid">
+                    </a>
+                @else
+                    <p>File Papan tidak tersedia.</p>
+                @endif
             </div>
 
             <!-- Card Section -->

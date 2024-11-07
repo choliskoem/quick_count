@@ -17,6 +17,9 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/detail', [HomeController::class, 'index2'])->name('detail');
+
+    Route::get('/saksi/create2', [SaksiController::class, 'create2'])->name('saksi.create2');
+
     Route::resource('saksi', SaksiController::class);
     Route::get('/desasaksi/{id_kabkota}', [SaksiController::class, 'getDesaKabkota']);
     Route::get('/bagian-pemilusaksi/{id_kabkota}', [SaksiController::class, 'getBagianPemiluKabkota']);
@@ -25,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bagian-pemilu/{id_kabkota}', [HomeController::class, 'getBagianPemiluByKabkota']);
 
     Route::post('/saksi/store', [SaksiController::class, 'store']);
+    Route::post('/saksi/store2', [SaksiController::class, 'store2']);
+    Route::get('/getNoHp/{kd_saksi}', [SaksiController::class, 'getNoHp']);
+
+
+
 
     Route::controller(PesertaController::class)->prefix('/peserta')->name('peserta')->group(function () {
         Route::get('/', 'index');

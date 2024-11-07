@@ -13,14 +13,31 @@ class VerifController extends Controller
 {
     public function index(Request $request)
     {
-        $results = DB::table('t_count as c')
-            ->join('wilayah_saksi as ws', 'ws.id_wilayah_saksi', '=', 'c.id_wilayah_saksi')
-            ->join('t_wilayah as w', 'w.id_wilayah', '=', 'ws.id_wilayah')
-            ->join('tps as ps', 'ps.id_tps', '=', 'ws.id_tps')
-            ->select('c.id_wilayah_saksi', 'w.nama_desa', 'ps.tps', 'c.created_at')
-            ->where('status', '0')
-            ->groupBy('w.nama_desa', 'ps.tps', 'c.created_at', 'c.id_wilayah_saksi')
-            ->orderBy('c.created_at', 'ASC')
+
+        $kabkotaId = $request->session()->get('pengguna_wilayah.kabkota_id');
+
+
+        $results = DB::table('wilayah_saksi as w')
+            ->leftJoin('t_wilayah as wl', 'wl.id_wilayah', '=', 'w.id_wilayah')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'w.id_kabkota')
+            ->leftJoin('tps as t', 't.id_tps', '=', 'w.id_tps')
+            ->join('t_count as c', 'c.id_wilayah_saksi', '=', 'w.id_wilayah_saksi')
+            ->where('w.id_kabkota', $kabkotaId)
+            ->where('c.status', '0')
+            ->select(
+                'w.id_kabkota',
+                'w.id_wilayah_saksi',
+                DB::raw('CONCAT(wl.nama_desa, " - ", wp.wilayah) AS nama_desa'),
+                't.tps',
+                'c.created_at'
+
+            )
+            ->groupBy(
+                'w.id_wilayah_saksi',
+                'c.created_at'
+            )
+            ->orderBy('wl.id_wilayah')
+            ->orderBy('w.id_tps')
             ->limit(5)
             ->get();
 
@@ -31,8 +48,7 @@ class VerifController extends Controller
     {
         // Ambil `id` dari URL query string
         $id = $request->query('id');
-        $fileCi1 = file_ci_1::where('id_wilayah_saksi', $request->query('id'))->first();
-        $filePapan = file_papan::where('id_wilayah_saksi', $request->query('id'))->first();
+        $id2 = $request->query('id2');
 
 
         // Validasi apakah `id` ada
@@ -40,15 +56,35 @@ class VerifController extends Controller
             return redirect()->back()->withErrors('ID Wilayah Saksi tidak ditemukan. Pastikan URL sudah benar.');
         }
 
+        // Ambil data dari file_ci_1 dan file_papan
+        $fileCi1 = file_ci_1::where('id_wilayah_saksi', $id)->first();
+        $filePapan = file_papan::where('id_wilayah_saksi', $id)->first();
+
+        // Check if the files are null and handle accordingly
+        $fileCi1Url = $fileCi1 ? $fileCi1->url_file : null;
+        $filePapanUrl = $filePapan ? $filePapan->url_file : null;
+
         // Ambil data dari tabel `t_count` dan `v_peserta`
         $results = DB::table('t_count as c')
-            ->join('v_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
-            ->select('p.id_peserta', 'p.nama_peserta', 'c.jumlah')
-            ->where('id_wilayah_saksi', $id)
+            ->select(
+                'p.id_peserta',
+                'vp.nama_peserta',
+                DB::raw('SUM(c.jumlah) AS jumlah'),
+                'wp.id_kabkota',
+                'wp.wilayah'
+            )
+            ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
+            ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
+            ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->join('v_peserta as vp', 'vp.id_peserta', '=', 'p.id_peserta')
+            ->where('c.id_wilayah_saksi', $id)
+            ->where('wp.id_kabkota', $id2)
+            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'wp.id_kabkota', 'wp.wilayah')
             ->get();
 
-        return view('pages.verifikasi.create', compact('results', 'fileCi1', 'filePapan'));
+        return view('pages.verifikasi.create', compact('results', 'fileCi1Url', 'filePapanUrl'));
     }
+
 
     public function store(Request $request)
     {

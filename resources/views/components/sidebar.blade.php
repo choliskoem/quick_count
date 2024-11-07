@@ -45,12 +45,12 @@
                 </ul>
             </li>
             @if (Auth::user()->id_level == '1')
-                <li class="menu-header">User</li>
+                <li class="menu-header">Akun</li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>User</span></a>
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Akun</span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="nav-link" href="/user">Penginputan User</a>
+                            <a class="nav-link" href="/user">Penginputan Akun</a>
                         </li>
 
                     </ul>
@@ -59,19 +59,19 @@
 
 
 
-            @if (Auth::user()->id_level == '1')
-                <li class="menu-header">Verifikasi</li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Verifikasi
-                        </span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="nav-link" href="/verif">Verifikasi Data</a>
-                        </li>
+            {{-- @if (Auth::user()->id_level == '1') --}}
+            <li class="menu-header">Verifikasi</li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Verifikasi
+                    </span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="nav-link" href="/verif">Verifikasi Data</a>
+                    </li>
 
-                    </ul>
-                </li>
-            @endif
+                </ul>
+            </li>
+            {{-- @endif --}}
 
     </aside>
 </div>

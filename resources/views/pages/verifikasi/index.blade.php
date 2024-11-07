@@ -53,9 +53,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Nama Desa</th>
+                                    <th scope="col">Nama Desa - Wilayah</th>
                                     <th scope="col">Tps</th>
-                                    <th scope="col">created at</th>
+                                    <th scope="col">Waktu (WA)</th>
                                     <th scope="col">Aksi</th>
 
                                 </tr>
@@ -68,7 +68,7 @@
                                         <td>{{ $verif->tps }}</td>
                                         <td>{{ $verif->created_at }}</td>
                                         <td>
-                                            <a href="{{ route('verif.create', ['id' => $verif->id_wilayah_saksi]) }}"
+                                            <a href="{{ route('verif.create', ['id' => $verif->id_wilayah_saksi, 'id2' => $verif->id_kabkota]) }}"
                                                 class="btn btn-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>

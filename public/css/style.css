@@ -1639,7 +1639,7 @@ h6 .badge {
 }
 
 .btn-grad {
-    background-image: linear-gradient(to right, #E55D87 0%, #5FC3E4  51%, #E55D87  100%);
+    background-image: linear-gradient(to right, #080707 0%, #FFFFFF  51%, #d2261c  100%);
 
     text-align: center;
     text-transform: uppercase;
@@ -1917,7 +1917,7 @@ h6 .badge {
   height: 115px;
   /* background-image: linear-gradient(to right, #E55D87 0%, #5FC3E4  51%, #E55D87  100%) 1 1 1 1;
    */
-   background: linear-gradient(to right, #E55D87 0%, #5FC3E4  51%, #E55D87  100%);
+   background: linear-gradient(to right, #080707 0%, #FFFFFF  60%, #d2261c  100%);
   z-index: -1;
 }
 
