@@ -15,11 +15,16 @@ class PesertaController extends Controller
     public function index()
     {
         return view('pages.peserta.index', [
-            'peserta' => peserta::with('bagianPemilu.kabkota')->with([
-                'detailPeserta' => function (Builder $builder) {
-                    $builder->orderBy('posisi');
-                }
-            ])->get()
+            'peserta' => peserta::with([
+                // 'bagianPemilu.kabkota' => function ($query) {
+                //     $query->orderBy('id_kabkota');
+                // },
+
+                // 'detailPeserta' => function (Builder $builder) {
+                //     $builder->orderBy('posisi');
+                // }
+            ])->orderBy('id_bagian_pemilu', 'asc')->orderBy('no_urut', 'asc')
+                ->get()
         ]);
     }
 
