@@ -6,6 +6,7 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 @endpush
 
 @section('main')
@@ -31,35 +32,38 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nomor Urut</th>
-                                <th scope="col">Bagian Pemilu</th>
-                                <th scope="col">Posisi 1</th>
-                                <th scope="col">Posisi 2</th>
-                                <th scope="col">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($peserta as $p)
+                    <div class="table-responsive">
+                        <table class="table-striped table" id="table-2">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $p->no_urut }}</td>
-                                    <td>{{ strtoupper($p->bagianPemilu->label) . ' - ' . $p->bagianPemilu->kabkota->wilayah }}
-                                    </td>
-                                    <td>{{ $p->detailPeserta[0]->nama_peserta }}</td>
-                                    <td>{{ $p->detailPeserta[1]->nama_peserta }}</td>
-                                    <td><a href="{{ route('peserta.update', ['id' => $p->id_peserta]) }}"
-                                            class="btn btn-primary">
-                                            Edit
-                                        </a></td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nomor Urut</th>
+                                    <th scope="col">Bagian Pemilu</th>
+                                    <th scope="col">Posisi 1</th>
+                                    <th scope="col">Posisi 2</th>
+                                    <th scope="col">Edit</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($peserta as $p)
+                                    <tr>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $p->no_urut }}</td>
+                                        <td>{{ strtoupper($p->bagianPemilu->label) . ' - ' . $p->bagianPemilu->kabkota->wilayah }}
+                                        </td>
+                                        <td>{{ $p->detailPeserta[0]->nama_peserta }}</td>
+                                        <td>{{ $p->detailPeserta[1]->nama_peserta }}</td>
+                                        <td><a href="{{ route('peserta.update', ['id' => $p->id_peserta]) }}"
+                                                class="btn btn-primary">
+                                                Edit
+                                            </a></td>
+                                    </tr>
+                                @endforeach
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
 
@@ -79,6 +83,13 @@
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('library/izitoast/dist/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    {{-- <script src="{{ asset() }}"></script> --}}
+    {{-- <script src="{{ asset() }}"></script> --}}
+    <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+
+    <!-- Page Specific JS File -->
+    <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/modules-toastr.js') }}"></script>
