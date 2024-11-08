@@ -12,7 +12,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Akun</h1>
+                <h1>Scan</h1>
             </div>
             <div class="section-body">
                 @if (session('success'))
@@ -23,12 +23,12 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h4>Akun</h4>
-                    <div class="card-header-action">
+                    {{-- <h4>Akun</h4> --}}
+                    {{-- <div class="card-header-action">
                         <a href="{{ route('user.create') }}" class="btn btn-primary">
                             Tambah Akun
                         </a>
-                    </div>
+                    </div> --}}
 
                     <div class="clearfix mb-3"></div>
 

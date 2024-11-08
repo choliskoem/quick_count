@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SaksiController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\ScanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifController;
 use App\Models\User;
@@ -21,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/saksi/create2', [SaksiController::class, 'create2'])->name('saksi.create2');
 
     Route::resource('saksi', SaksiController::class);
+    Route::resource('scan', ScanController::class);
+
     Route::get('/desasaksi/{id_kabkota}', [SaksiController::class, 'getDesaKabkota']);
     Route::get('/bagian-pemilusaksi/{id_kabkota}', [SaksiController::class, 'getBagianPemiluKabkota']);
 
