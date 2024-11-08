@@ -148,7 +148,7 @@
                         }],
                         xAxes: [{
                             ticks: {
-                                display: false, // Change this to true to display labels
+                                display: true, // Change this to true to display labels
                                 font: {
                                     size: 12, // Optional: Adjust font size if needed
                                 }
@@ -268,7 +268,7 @@
                         }],
                         xAxes: [{
                             ticks: {
-                                display: false, // Change this to true to display labels
+                                display: true, // Change this to true to display labels
                                 font: {
                                     size: 12, // Optional: Adjust font size if needed
                                 }
