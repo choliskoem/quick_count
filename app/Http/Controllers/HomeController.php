@@ -91,7 +91,7 @@ class HomeController extends Controller
                     ->from('t_pengguna_wilayah');
             })
             ->where('pw.id_pengguna', $user)
-            ->get();; // Use all() instead of get() for better readability
+            ->get(); // Use all() instead of get() for better readability
 
         $results = DB::table('t_count as c')
             ->select(

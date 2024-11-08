@@ -39,23 +39,21 @@
                                 </div>
                             @endif
 
-                            <form action="/saksi/store2" method="POST">
+                            <form action="{{ route('saksi.store2') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="nama_saksi">Nama Saksi:</label>
-                                    <select class="form-control select2" id="nama_saksi" name="kd_saksi" required>
-                                        <option value="">Pilih Nama Saksi</option>
-                                        @foreach ($saksiList as $saksi)
-                                            <option value="{{ $saksi->kd_saksi }}" data-no-hp="{{ $saksi->no_hp }}">
-                                                {{ $saksi->nama_saksi }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="hidden" class="form-control" id="kd_saksi" name="kd_saksi"
+                                        value="{{ request()->query('id3') }}">
+                                    <input type="text" class="form-control" value="{{ request()->query('id6') }}"
+                                        readonly>
+
                                 </div>
 
-                                <div class="form-group" id="no_hp_group" style="display: none;">
+                                <div class="form-group" id="no_hp_group">
                                     <label for="no_hp">No Handphone:</label>
-                                    <input type="text" class="form-control" id="no_hp" name="no_hp" readonly>
+                                    <input type="text" class="form-control" id="no_hp"
+                                        value="{{ request()->query('id5') }}" name="no_hp" readonly>
                                 </div>
 
                                 <div class="form-group">
@@ -65,30 +63,39 @@
                                             <option value="{{ $desanama->id_desa }}">{{ $desanama->nama_desa }}</option>
                                         @endforeach
                                     </select> --}}
-                                    <select class="form-control select2" id="wilayah" required>
+                                    <input type="hidden" class="form-control" id="id_wilayah"
+                                        value="{{ request()->query('id4') }}" name="id_wilayah">
+
+                                    <input type="hidden" class="form-control" id="id_kabkota"
+                                        value="{{ request()->query('id2') }}" name="id_kabkota">
+
+                                    <input type="text" class="form-control" id="wilayah"
+                                        value="{{ request()->query('id7') }}" name="wilayah" readonly>
+                                    {{-- <select class="form-control select2" id="wilayah" required>
 
                                         <option value="">Pilih Wilayah</option>
                                         @foreach ($wilayah as $wilayah)
                                             <option value="{{ $wilayah->id_kabkota }}">{{ $wilayah->wilayah }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                 </div>
 
-                                <input type="hidden" id="id_wilayah" name="id_wilayah">
+                                {{-- <input type="hidden" id="id_wilayah" name="id_wilayah"> --}}
 
 
                                 <div class="form-group">
                                     <label for="desa">Desa:</label>
-
-                                    <select class="form-control select2" id="desa" name="id_desa" required>
+                                    <input type="text" class="form-control" id="desa"
+                                        value="{{ request()->query('id8') }}" name="desa" readonly>
+                                    {{-- <select class="form-control select2" id="desa" name="id_desa" required>
                                         <option value="">Pilih Desa</option>
-                                    </select>
+                                    </select> --}}
 
 
                                 </div>
 
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="d-block">Bagian Pemilu:</label>
                                     <div id="bagian-pemilu-checkboxes2" class="form-check form-check-inline  col-ml-2  ">
 
@@ -97,12 +104,12 @@
                                         <!-- Checkbox akan muncul di sini -->
                                     </div>
 
-                                </div>
+                                </div> --}}
 
 
                                 <div class="form-group">
                                     <label for="tps">Tps:</label>
-                                    <select class="form-control select2" name="tps[]" multiple="multiple" required>
+                                    <select class="form-control select2" name="tps[]" multiple="multiple">
 
                                         <option value="">Pilih Wilayah</option>
                                         @foreach ($tpsList as $tps)
@@ -178,7 +185,7 @@
         @endif
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#nama_saksi').change(function() {
                 var selectedOption = $(this).find('option:selected');
@@ -284,7 +291,7 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 
     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="pilgub">
     <label class="form-check-label" for="inlineCheckbox1">pilgub</label>

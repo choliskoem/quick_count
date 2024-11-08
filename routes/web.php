@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bagian-pemilu/{id_kabkota}', [HomeController::class, 'getBagianPemiluByKabkota']);
 
     Route::post('/saksi/store', [SaksiController::class, 'store']);
-    Route::post('/saksi/store2', [SaksiController::class, 'store2']);
+    Route::post('/saksi/store2', [SaksiController::class, 'store2'])->name('saksi.store2');
     Route::get('/getNoHp/{kd_saksi}', [SaksiController::class, 'getNoHp']);
 
 

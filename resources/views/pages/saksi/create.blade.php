@@ -46,7 +46,7 @@
                                     <input type="text" class="form-control" id="nama_saksi" name="nama_saksi" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="no_hp">No Handphone:</label>
+                                    <label for="no_hp">No Handphone (Tambahkan angka 62 di depan 8):</label>
                                     <input type="text" class="form-control" id="no_hp" name="no_hp" required>
                                     @if ($errors->has('no_hp'))
                                         <span class="text-danger">{{ $errors->first('no_hp') }}</span>

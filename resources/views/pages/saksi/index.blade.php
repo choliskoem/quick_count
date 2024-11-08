@@ -29,9 +29,9 @@
                         <a href="{{ route('saksi.create') }}" class="btn btn-primary">
                             Tambah Saksi
                         </a>
-                        <a href="{{ route('saksi.create2') }}" class="btn btn-primary">
+                        {{-- <a href="{{ route('saksi.create2') }}" class="btn btn-primary">
                             Tambah Wilayah Tps
-                        </a>
+                        </a> --}}
                     </div>
 
                     <div class="clearfix mb-3"></div>
@@ -62,6 +62,7 @@
                                     <th scope="col">Wilayah</th>
                                     <th scope="col">Kecamatan</th>
                                     <th scope="col">Desa</th>
+                                    <th scope="col">Tambah Tps</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,10 +76,12 @@
                                         {{-- <td>{{ $s->wilayah }}</td> --}}
                                         <td>{{ $s->nama_kecamatan }}</td>
                                         <td>{{ $s->nama_desa }}</td>
-                                        {{-- <td><a href="{{ route('peserta.update', ['id' => $s->id_peserta]) }}"
-                                            class="btn btn-primary">
-                                            Edit
-                                        </a></td> --}}
+                                        <td>
+                                            <a href="{{ route('saksi.create2', ['id2' => $s->id_kabkota, 'id3' => $s->kd_saksi, 'id4' => $s->id_wilayah, 'id5' => $s->no_hp, 'id6' => $s->nama_saksi, 'id7' => $s->wilayah, 'id8' => $s->nama_desa]) }}"
+                                                class="btn btn-primary">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

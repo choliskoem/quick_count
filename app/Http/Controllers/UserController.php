@@ -29,8 +29,16 @@ class UserController extends Controller
 
     public function create()
     {
-        $result = DB::table('wilayah_pemilu')
+        $result = DB::table('t_bagian_pemilu as bp')
+            ->join('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->whereIn('bp.id_bagian_pemilu', function ($query) {
+                $query->select('id_bagian_pemilu')
+                    ->from('t_peserta');
+            })
+
+            ->select('wp.id_kabkota', 'wp.wilayah')
             ->get();
+
         return  view('pages.user.create', compact('result'));
     }
 

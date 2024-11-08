@@ -39,12 +39,6 @@ class SaksiController extends Controller
         $id_pengguna = Auth::user()->id_pengguna; // Pastikan id_pengguna diambil dari request
 
         $result = DB::table('wilayah_saksi as ws')
-            ->when($request->input('name'), function ($query, $name) {
-                return $query->where('s.nama_saksi', 'like', '%' . $name . '%');
-            })
-            ->when($request->input('name'), function ($query, $name) {
-                return $query->where('s.no_hp', 'like', '%' . $name . '%');
-            })
             ->leftJoin('saksi as s', 's.kd_saksi', '=', 'ws.kd_saksi')
             ->leftJoin('t_wilayah as tw', 'tw.id_wilayah', '=', 'ws.id_wilayah')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'ws.id_kabkota')
@@ -55,11 +49,25 @@ class SaksiController extends Controller
                     ->from('t_pengguna_wilayah')
                     ->where('id_pengguna', $id_pengguna); // Gunakan parameter binding
             })
-            ->groupBy('s.nama_saksi', 's.no_hp', 'ws.id_kabkota', 'wp.wilayah', 'tw.nama_kecamatan', 'tw.nama_desa')
-            ->select(
+            ->groupBy(
+                // 'ws.id_wilayah_saksi',
+                'tw.id_wilayah',
                 's.nama_saksi',
                 's.no_hp',
-                DB::raw("GROUP_CONCAT(distinct tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') as tps_list"),
+                'ws.id_kabkota',
+                'wp.wilayah',
+                'tw.nama_kecamatan',
+                'tw.nama_desa'
+            )
+            ->select(
+                // 'ws.id_wilayah_saksi',
+                // 'tw.id_wilayah',
+                'wp.id_kabkota',
+                'tw.id_wilayah',
+                's.kd_saksi',
+                's.nama_saksi',
+                's.no_hp',
+                DB::raw("GROUP_CONCAT(DISTINCT tp.tps ORDER BY tp.tps ASC SEPARATOR ' , ') AS tps_list"),
                 'wp.wilayah',
                 'tw.nama_kecamatan',
                 'tw.nama_desa'
@@ -70,9 +78,14 @@ class SaksiController extends Controller
     public function create()
     {
 
-        $wilayah = $results = DB::table('wilayah_pemilu')
-            ->where('id_kabkota', '!=', '7')
-            ->where('id_kabkota', '!=', '0')
+        $wilayah = $results = DB::table('t_bagian_pemilu as bp')
+            ->join('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
+            ->whereIn('bp.id_bagian_pemilu', function ($query) {
+                $query->select('id_bagian_pemilu')
+                    ->from('t_peserta');
+            })
+            ->where('wp.id_kabkota', '!=', '7')
+            ->select('wp.id_kabkota', 'wp.wilayah')
             ->get();
 
         $tpsList = tps::all();
@@ -152,6 +165,8 @@ class SaksiController extends Controller
 
         $kabkotaId = $request->session()->get('pengguna_wilayah.kabkota_id');
 
+        $id3 = $request->query('id3');
+
         $wilayah =  $results = DB::table('wilayah_pemilu')
             ->whereIn('id_kabkota', function ($query) {
                 $query->select('id_kabkota')
@@ -162,7 +177,11 @@ class SaksiController extends Controller
             // ->where('id_kabkota', '!=', '7')
             ->get();
 
-        $tpsList = tps::all();
+        $tpsList = Tps::whereNotIn('id_tps', function ($query) use ($id3) {
+            $query->select('id_tps')
+                ->from('wilayah_saksi')
+                ->where('kd_saksi', $id3);
+        })->get();
 
         return view('pages.saksi.create2', compact('saksiList',  'wilayah', 'tpsList'));
     }
@@ -187,33 +206,43 @@ class SaksiController extends Controller
         //     'kd_saksi' => 'required' // Ensure kd_saksi is selected from the dropdown
         // ]);
 
-        try {
-            // Use the selected kd_saksi from the dropdown
-            $kdSaksi = $request->kd_saksi;
+        // try {
+        // Use the selected kd_saksi from the dropdown
+        $kdSaksi = $request->kd_saksi;
+        $saved  = [];
 
-            // Save wilayah_saksi with the corresponding relationship
-            foreach ($request->id_kabkota as $kabkota_id) {
-                foreach ($request->tps as $tps_id) {
-                    $wilayahSaksi = new wilayah_saksi();
-                    $wilayahSaksi->id_wilayah_saksi = Str::uuid();
-                    $wilayahSaksi->id_kabkota = $kabkota_id;
-                    $wilayahSaksi->id_wilayah = $request->id_wilayah;
-                    $wilayahSaksi->kd_saksi = $kdSaksi; // Use the selected kd_saksi
-                    $wilayahSaksi->id_tps = $tps_id;
+        // Save wilayah_saksi with the corresponding relationship
+        // foreach ($request->id_kabkota as $kabkota_id) {
+        foreach ($request->tps as $tps_id) {
+            $wilayahSaksi = new wilayah_saksi();
+            $wilayahSaksi->id_wilayah_saksi = Str::uuid();
+            $wilayahSaksi->id_kabkota = $request->id_kabkota;
+            $wilayahSaksi->id_wilayah = $request->id_wilayah;
+            $wilayahSaksi->kd_saksi = $kdSaksi; // Use the selected kd_saksi
+            $wilayahSaksi->id_tps = $tps_id;
 
-                    // return $wilayahSaksi;
-                    $wilayahSaksi->save();
-                }
-            }
-
-
-            // Redirect with success message
-            return redirect()->route('saksi.index')->with('success', 'Saksi Berhasil Ditambahkan.');
-        } catch (\Exception $e) {
-            // Log error and redirect with an error message
-            // \Log::error('Failed to save saksi: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to add saksi.');
+            // return $wilayahSaksi;
+            $wilayahSaksi->save();
+            // return     $saved[] = $wilayahSaksi->toArray();
         }
+        // }
+
+
+        // Redirect with success message
+        return redirect()->route('saksi.index')->with('success', 'Saksi Berhasil Ditambahkan.');
+        // } catch (\Exception $e) {
+        //     // Log error and redirect with an error message
+        //     // \Log::error('Failed to save saksi: ' . $e->getMessage());
+        //     return redirect()->back()->with('error', 'Failed to add saksi.');
+        // }
+    }
+
+
+    public function show($id)
+    {
+        // Retrieve the specific `Saksi` record by ID and pass it to the view.
+        $saksi = Saksi::findOrFail($id);
+        return view('saksi.show', compact('saksi'));
     }
 
 
