@@ -22,7 +22,7 @@ class HomeController extends Controller
 
 
         $dataGubernur = DB::table('t_count as c')
-            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->select('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
             ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
             ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
@@ -32,7 +32,7 @@ class HomeController extends Controller
             ->get();
 
         $dataGubernur2 = DB::table('t_quick as c')
-            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->select('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
             ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
             ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
@@ -42,7 +42,7 @@ class HomeController extends Controller
             ->get();
 
         $dataKabupaten = DB::table('t_count as c')
-            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->select('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
             ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
             ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
@@ -51,11 +51,13 @@ class HomeController extends Controller
             ->where('wp.id_kabkota', '!=', 7)
 
             ->where('pw.id_pengguna', Auth::user()->id_pengguna)
-            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'wp.id_kabkota', 'wp.wilayah')
+            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', 'wp.id_kabkota', 'wp.wilayah')
             ->get();
 
+        // return $dataKabupaten;
+
         $dataKabupaten2 = DB::table('t_quick as c')
-            ->select('p.id_peserta', 'vp.nama_peserta', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
+            ->select('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', DB::raw('SUM(c.jumlah) as jumlah'), 'wp.id_kabkota', 'wp.wilayah')
             ->join('t_peserta as p', 'p.id_peserta', '=', 'c.id_peserta')
             ->leftJoin('t_bagian_pemilu as bp', 'p.id_bagian_pemilu', '=', 'bp.id_bagian_pemilu')
             ->leftJoin('wilayah_pemilu as wp', 'wp.id_kabkota', '=', 'bp.id_kabkota')
@@ -63,7 +65,7 @@ class HomeController extends Controller
             ->leftJoin('t_pengguna_wilayah as pw', 'wp.id_kabkota', '=', 'pw.id_kabkota')
             ->where('wp.id_kabkota', '!=', 7)
             ->where('pw.id_pengguna', Auth::user()->id_pengguna)
-            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'wp.id_kabkota', 'wp.wilayah')
+            ->groupBy('p.id_peserta', 'vp.nama_peserta', 'p.no_urut', 'wp.id_kabkota', 'wp.wilayah')
             // Added wp.id_kabkota and wp.wilayah
             ->get();
 

@@ -143,12 +143,15 @@
                             },
                             ticks: {
                                 beginAtZero: true,
-                                stepSize: 150
+                                stepSize: 25
                             }
                         }],
                         xAxes: [{
                             ticks: {
-                                display: false
+                                display: false, // Change this to true to display labels
+                                font: {
+                                    size: 12, // Optional: Adjust font size if needed
+                                }
                             },
                             gridLines: {
                                 display: false
@@ -260,12 +263,15 @@
                             },
                             ticks: {
                                 beginAtZero: true,
-                                stepSize: 150
+                                stepSize: 25
                             }
                         }],
                         xAxes: [{
                             ticks: {
-                                display: false
+                                display: false, // Change this to true to display labels
+                                font: {
+                                    size: 12, // Optional: Adjust font size if needed
+                                }
                             },
                             gridLines: {
                                 display: false

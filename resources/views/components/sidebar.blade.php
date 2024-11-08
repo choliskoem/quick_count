@@ -71,6 +71,21 @@
 
                 </ul>
             </li>
+
+            @if (Auth::user()->id_level == '1')
+                <li class="menu-header">Scan</li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Scan QrCode
+                        </span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link" href="/scan">Scan QrCode</a>
+                        </li>
+
+                    </ul>
+                </li>
+            @endif
+
             {{-- @endif --}}
 
     </aside>
